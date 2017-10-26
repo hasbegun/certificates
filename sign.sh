@@ -4,8 +4,8 @@ CA_DIR=root/ca
 
 if [ ! -f $CA_DIR/certs/ca.cert.pem ];
 then
-  root_ca.sh
-  intermediate_ca.sh
+  ./root_ca.sh
+  ./intermediate_ca.sh
 fi
 
 if [ -z $1 ]; then

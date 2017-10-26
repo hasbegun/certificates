@@ -13,13 +13,13 @@ if [ ! -d $CA_DIR ]; then
 fi
 
 cd $CA_DIR
+echo "ROOT CA Location: `pwd`"
 if [ ! -f openssl.cnf ]; then
   cat <<-EOF > openssl.cnf
   # OpenSSL root CA configuration file.
-  # Copy to `/root/ca/openssl.cnf`.
 
   [ ca ]
-  # `man ca`
+  # man ca
   default_ca = CA_default
 
   [ CA_default ]
@@ -53,7 +53,7 @@ if [ ! -f openssl.cnf ]; then
 
   [ policy_strict ]
   # The root CA should only sign intermediate certificates that match.
-  # See the POLICY FORMAT section of `man ca`.
+  # See the POLICY FORMAT section of man ca.
   countryName             = match
   stateOrProvinceName     = match
   organizationName        = match
@@ -63,7 +63,7 @@ if [ ! -f openssl.cnf ]; then
 
   [ policy_loose ]
   # Allow the intermediate CA to sign a more diverse range of certificates.
-  # See the POLICY FORMAT section of the `ca` man page.
+  # See the POLICY FORMAT section of the ca man page.
   countryName             = optional
   stateOrProvinceName     = optional
   localityName            = optional
@@ -73,7 +73,7 @@ if [ ! -f openssl.cnf ]; then
   emailAddress            = optional
 
   [ req ]
-  # Options for the `req` tool (`man req`).
+  # Options for the req tool (man req).
   default_bits        = 2048
   distinguished_name  = req_distinguished_name
   string_mask         = utf8only
@@ -103,21 +103,21 @@ if [ ! -f openssl.cnf ]; then
   emailAddress_default            = inho.choi@menlosecurity.com
 
   [ v3_ca ]
-  # Extensions for a typical CA (`man x509v3_config`).
+  # Extensions for a typical CA (man x509v3_config).
   subjectKeyIdentifier = hash
   authorityKeyIdentifier = keyid:always,issuer
   basicConstraints = critical, CA:true
   keyUsage = critical, digitalSignature, cRLSign, keyCertSign
 
   [ v3_intermediate_ca ]
-  # Extensions for a typical intermediate CA (`man x509v3_config`).
+  # Extensions for a typical intermediate CA (man x509v3_config).
   subjectKeyIdentifier = hash
   authorityKeyIdentifier = keyid:always,issuer
   basicConstraints = critical, CA:true, pathlen:0
   keyUsage = critical, digitalSignature, cRLSign, keyCertSign
 
   [ usr_cert ]
-  # Extensions for client certificates (`man x509v3_config`).
+  # Extensions for client certificates (man x509v3_config).
   basicConstraints = CA:FALSE
   nsCertType = client, email
   nsComment = "OpenSSL Generated Client Certificate"
@@ -127,7 +127,7 @@ if [ ! -f openssl.cnf ]; then
   extendedKeyUsage = clientAuth, emailProtection
 
   [ server_cert ]
-  # Extensions for server certificates (`man x509v3_config`).
+  # Extensions for server certificates (man x509v3_config).
   basicConstraints = CA:FALSE
   nsCertType = server
   nsComment = "OpenSSL Generated Server Certificate"
@@ -137,16 +137,17 @@ if [ ! -f openssl.cnf ]; then
   extendedKeyUsage = serverAuth
 
   [ crl_ext ]
-  # Extension for CRLs (`man x509v3_config`).
+  # Extension for CRLs (man x509v3_config).
   authorityKeyIdentifier=keyid:always
 
   [ ocsp ]
-  # Extension for OCSP signing certificates (`man ocsp`).
+  # Extension for OCSP signing certificates (man ocsp).
   basicConstraints = CA:FALSE
   subjectKeyIdentifier = hash
   authorityKeyIdentifier = keyid,issuer
   keyUsage = critical, digitalSignature
-  extendedKeyUsage = critical, OCSPSigningEOF
+  extendedKeyUsage = critical, OCSPSigning
+EOF
 fi
 
 if [ ! -f private/ca.key.pem ]; then
